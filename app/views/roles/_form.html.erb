@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+   <div class="panel-heading">Form Role</div>
+   <div class="panel-body">
+      <%= form_for @role, html: { class: 'form-horizontal' } do |f| %>
+        <fieldset>
+          <div class="form-group">
+              <label class="col-sm-2 control-label">Nama</label>
+              <div class="col-sm-8">
+                <%= f.text_field :name, class: 'form-control' %>
+              </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" style="margin-right: 25px"></label>
+              <div class="col-sm-8">
+                <label class="checkbox c-checkbox c-checkbox-rounded">
+                    <input type="checkbox" id="selectAll" value="selectAll" type="checkbox">
+                    <span class="fa fa-check"></span>Select All</label>
+              </div>
+          </div>
+        </fieldset>
+        <%= render partial: "permissions", locals: {f: f, name: :permissions_attributes, permissions: @role.permissions} %>
+        <fieldset>
+          <div class="form-group">
+              <div class="col-sm-4 col-sm-offset-2 pull-right">
+                <%= link_to 'Cancel', roles_path, class: 'btn btn-default' %>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+          </div>
+        </fieldset>
+      <% end %>
+   </div>
+</div>
+
+<script type="text/javascript">
+  $("#selectAll").click(function() {
+   if (this.checked) {
+     $(':checkbox').each(function() {
+       this.checked = true;
+     });
+   } else {
+    $(':checkbox').each(function() {
+     this.checked = false;
+   });
+  }
+});
+</script>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  no_testing: MyString
+  tgl_testing: 2021-03-10
+  penguji: MyString
+
+two:
+  no_testing: MyString
+  tgl_testing: 2021-03-10
+  penguji: MyString

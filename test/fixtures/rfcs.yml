@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  no_registrasi_perubahan: MyString
+  versi_aplikasi: MyString
+  uraian_perubahan: MyString
+  link: MyString
+  tanggal: MyString
+
+two:
+  no_registrasi_perubahan: MyString
+  versi_aplikasi: MyString
+  uraian_perubahan: MyString
+  link: MyString
+  tanggal: MyString

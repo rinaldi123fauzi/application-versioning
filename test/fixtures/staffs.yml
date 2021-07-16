@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nama: MyString
+  jabatan: MyString
+  satuan_kerja: MyString
+  status_kepegawaian: MyString
+
+two:
+  nama: MyString
+  jabatan: MyString
+  satuan_kerja: MyString
+  status_kepegawaian: MyString

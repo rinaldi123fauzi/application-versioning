@@ -1,0 +1,152 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form User</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="<%= root_path %>">Home</a>
+      </li>
+      <li>
+        <a href="<%= users_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Form</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="panel panel-default">
+    <div class="panel-heading">Form User</div>
+    <div class="panel-body">
+      <%= form_for @user, html: {class: 'form-horizontal'} do |f| %>
+        <fieldset>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Nama</label>
+            <div class="col-sm-8">
+              <%= f.text_field :name, class: 'form-control' %>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Username</label>
+            <div class="col-sm-8">
+              <%= f.text_field :username, class: 'form-control' %>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-8">
+              <%= f.email_field :email, class: 'form-control' %>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-8">
+              <%= f.password_field :password, class: 'form-control' %>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Photo</label>
+            <div class="col-sm-8">
+              <%= f.file_field :photo, class: "form-control", direct_upload: true, accept: 'image/jpeg, image/jpg, image/png' %>
+              <% if @user.photo.attached? %>
+                  <span style="margin-right: 10px"><%= link_to "#{[ "#{@user.photo.filename}" ]}", rails_blob_path(@user.photo, disposition: 'preview'), :target => "_blank" %>
+                    <%= link_to '', url_for(controller: :users, action: :delete_photo, attachment_id: @user.photo.id), class: 'fa fa-close', method: "DELETE", data: { confirm: 'Are you sure?' } %>
+                  </span>
+                <% end %>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Role</label>
+            <div class="col-sm-8">
+              <%= f.collection_check_boxes :role_ids, Role.all, :id, :name do |m| %>
+                <%= m.label class: 'checkbox-inline' do %>
+                  <%= m.check_box class: 'checkbox-inline' %>
+                  <%= m.text %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-2">
+              <%= link_to 'Cancel', users_path, class: 'btn btn-default' %>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </fieldset>
+      <% end %>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      $(function() {
+          return $('.chosen-select').chosen({
+              no_results_text: 'No results matched',
+              width: '512px'
+          });
+      });
+
+      $(document).ready(function () {
+
+          if ($(".dtSource").val() == "Manual") {
+              $('.ldap').hide();
+              $('.manual').show();
+              $('#users dodol').disabled = false;
+              $('#users username').required = true;
+              $('#users password').required = true;
+              $('#users email').required = true;
+          } else if ($(".dtSource").val() == "LDAP") {
+              $('.manual').hide();
+              $('.ldap').show();
+              $('#users dodol').disabled = true;
+              $('#users username').required = false;
+              $('#users password').required = false;
+              $('#users email').required = false;
+          } else {
+              $('.ldap').hide();
+              $('.manual').hide();
+              $('#users dodol').disabled = false;
+          }
+      });
+
+      $("#dodol").select2({
+          theme: "bootstrap"
+      });
+      $("#divisi").select2({
+          theme: "bootstrap"
+      });
+      $("#area").select2({
+          theme: "bootstrap"
+      });
+
+      jQuery(function () {
+          var area = $('#area').html();
+          console.log(area);
+
+          return $('#divisi').change(function () {
+              var divisi, options;
+              divisi = $('#divisi :selected').text();
+              options = $(area).filter("optgroup[label=" + divisi + "]").html();
+              console.log(options);
+              if (options) {
+                  return $('#area').html(options);
+              } else {
+                  return $('#area').empty();
+              }
+          })
+      });
+
+  </script>

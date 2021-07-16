@@ -1,0 +1,58 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form Penyelesaian</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= penyelesaians_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Form</strong>
+      </li>
+    </ol>
+  </div> 
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to new_penyelesaian_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Penyelesaian
+    <% end %>
+    <!--    <h1>Listing </h1>-->
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+      <thead>
+      <tr>
+        <th>No</th>
+                  <th>Kode Penyelesaian</th>
+                  <th>Tgl Selesai</th>
+                  <th>Durasi</th>
+                  <th>Pic</th>
+                <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @penyelesaians.each_with_index do |penyelesaian, index| %>
+      <tr>
+        <td><%= index+1 %></td>
+                  <td><%= penyelesaian.kode_penyelesaian %></td>
+                  <td><%= penyelesaian.tgl_selesai %></td>
+                  <td><%= penyelesaian.durasi %></td>
+                  <td><%= penyelesaian.pic %></td>
+                <td><%= link_to 'Show', penyelesaian %></td>
+        <td><%= link_to 'Edit', edit_penyelesaian_path(penyelesaian) %></td>
+        <td><%= link_to 'Destroy', penyelesaian, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

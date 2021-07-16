@@ -1,0 +1,66 @@
+
+<div id="content">
+  <div class="page-header">
+    <%= link_to new_aplikasi_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Aplikasi
+    <% end %>
+    <!--    <h1>Listing </h1>-->
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+      <thead>
+      <tr>
+        <th>No</th>
+                  <th>Id Aplikasi</th>
+                  <th>Kode</th>
+                  <th>Nama Aplikasi</th>
+                  <th>Deskripsi</th>
+                  <th>Divisi</th>
+                  <th>Pemilik Proses</th>
+                  <th>Default Version</th>
+                  <th>Status</th>
+                <th></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @aplikasis.each_with_index do |aplikasi, index| %>
+      <tr class="gradeX">
+        <td><%= index+1 %></td>
+                  <td><%= aplikasi.id_aplikasi %></td>
+                  <td><%= aplikasi.kode %></td>
+                  <td><%= aplikasi.nama_aplikasi %></td>
+                  <td><%= aplikasi.deskripsi %></td>
+                  <td><%= aplikasi.try(:divisi) %></td>
+                  <td><%= aplikasi.pemilik_proses %></td>
+                  <td><%= aplikasi.try(:default_version) %></td>
+                  <td><%= aplikasi.try(:status) %></td>
+                <td>
+                    <%= link_to "", aplikasi_path(aplikasi.id), class: "fa fa-eye btn btn-xs btn-info" %>
+                    <%= link_to "", edit_aplikasi_path(aplikasi), class: " fa fa-pencil btn btn-xs btn-warning" %>
+                </td>
+        <%# <td><%= link_to "", aplikasi, method: :delete,  class: "fa fa-trash btn btn-xs btn-danger", data: { confirm: 'Are you sure?' } %>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% content_for :javascript do %>
+
+  <script type="text/javascript">
+    $(function() {
+
+        $('.dataTables-example').dataTable({
+            "dom": 'T<"clear">lfrtip',
+            "tableTools": {
+                "sSwfPath": "../assets/dataTables/swf/copy_csv_xls_pdf.swf"
+            }
+        });
+    });
+  </script>
+
+<% end %>
+

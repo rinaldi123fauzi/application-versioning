@@ -1,0 +1,370 @@
+<div class="wrapper wrapper-content">
+  <div id="content">
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-sm-4">
+          <h2>RFC Detail</h2>
+        <ol class="breadcrumb">
+          <li>
+              <a href="<%= url_for :controller => 'dashboards', :action => 'home' %>">Home</a>
+          </li>
+          <li>
+              <a href="<%= url_for :controller => 'rfcs', :action => 'index' %>">List</a>
+          </li>
+          <li class="active">
+              <strong>RFC Detail</strong>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <style>
+    dt{
+      font-size: 15px;
+    }
+
+    dd{
+      font-size: 15px;
+    }
+    #status{
+      font-size: 14px;
+    }
+    </style>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+          <div class="ibox">
+                <% if @rfc.status == "Open"%>
+                  <a href="../penyelesaians/<%= params[:id] %>/new_penyelesaian" class="btn btn-info">Penyelesaian</a>
+                <% elsif @rfc.status == "Waiting Quality Check" %>
+                  <a href="../internals/<%= params[:id] %>/new_internal" class="btn btn-info">Quality Check</a>
+                <% elsif @rfc.status == "Waiting UAT" %>
+                  <a href="../uats/<%= params[:id] %>/new_uat" class="btn btn-info">UAT</a>
+                <% elsif @rfc.status == "Waiting Release" %>
+                  <a href="../changes/<%= params[:id] %>/new_release" class="btn btn-info">Release</a>
+                <% end%>
+                <%= link_to new_rfc_path, class: 'btn btn-primary' do %>
+                  <span class="glyphicon glyphicon-plus"></span>
+                  Tambah
+                <% end %>
+                <%= link_to rfc_path(params[:id]), data: { confirm: 'Are you sure?' }, class: 'btn btn-danger', method: :delete do %>
+                  Delete
+                <% end %>
+                <br>
+                <br>
+            <div class="ibox-content">
+                <div class="row">
+                  <div class="col-lg-12">
+                      <div class="m-b-md">
+                          <a href="<%= edit_rfc_path(params[:id])%>" class="btn btn-white btn-xs pull-right">Edit Rfc</a>
+                          <h2><%= @rfc.no_registrasi_perubahan%></h2>
+                      </div>
+                      <div class="col-lg-4 col-md-4">
+                        <dl class="dl-horizontal">
+                            <dt>Status:</dt>
+                            <% if @rfc.status == "Open"%>
+                              <dd><span class="label label-primary" id="status"><%= @rfc.status%></span></dd>
+                            <% elsif @rfc.status == "Closed" %>
+                              <dd><span class="label label-info" id="status"><%= @rfc.status%></span></dd>
+                            <% else %>
+                              <dd><span class="label label-warning" id="status"><%= @rfc.status%></span></dd>
+                            <% end %>
+                        </dl>
+                      </div>
+                      
+                      <div class="col-lg-4 col-md-4">
+                        <dl class="dl-horizontal">
+                            <dt>Created by:</dt>
+                            <dd><%= @rfc.issued_by %></dd>
+                        </dl>
+                      </div>
+
+                       <div class="col-lg-4 col-md-4">
+                        <dl class="dl-horizontal">
+                            <dt>Tanggal:</dt>
+                            <% @tgl = Date.parse(@rfc.tanggal) %>
+                            <dd><%= @tgl.strftime("%d %B %Y") %></dd>
+                        </dl>
+                      </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-lg-5">
+                      <dl class="dl-horizontal">
+
+                          <dt>Aplikasi:</dt>
+                          <dd><%= @rfc.aplikasi.try(:nama_aplikasi)%></dd>
+                          <dt>Owner:</dt>
+                          <dd><%= @rfc.aplikasi.try(:pemilik_proses)%></dd>
+                          <dt>Version:</dt>
+                          <dd><%= @rfc.versi_aplikasi%></dd>
+                          <%# <dd><a href="#" class="text-navy"> Zender Company</a> </dd> %>
+                      </dl>
+                  </div>
+                  <div class="col-lg-7" id="cluster_info">
+                      <dl class="dl-horizontal">
+
+                          <dt>Prioritas:</dt>
+                          <dd><%= @rfc.priority.nama %></dd>
+                          <dt>Kategori:</dt>
+                          <dd><%= @rfc.category.nama %></dd>
+                          <dt>Risiko:</dt>
+                          <dd><%= @rfc.risiko.nama %></dd>
+                          
+                      </dl>
+                  </div>
+                </div>
+                <hr style="border: 1px dotted black;">
+                <div class="row">
+                  <div class="col-lg-4">
+                      <dl class="dl-horizontal">
+                        <% if @uraian_perubahan.kind_of?(Array) %>
+                          <% @uraian_perubahan.each_with_index do |etc, index| %>
+                            <dt>Uraian Perubahan <%= index+1 %> :</dt>
+                            <dd>
+                              <span><%= etc %></span>
+                              
+                            </dd>
+                            <br>
+                          <% end %>
+                        <% end %>
+                      </dl>
+                  </div>
+
+                  <div class="col-lg-4">
+                      <dl class="dl-horizontal">
+                          <dd>
+                              <% if @link.kind_of?(Array) %>
+                                <% @link.each_with_index do |etc, index| %>
+                                  <dt>Link <%= index+1 %> :</dt>
+                                  <dd>
+                                    <span><a href="<%= etc %>" target="_blank"><%= etc %></a></span>
+                                    
+                                  </dd>
+                                  <br>
+                                <% end %>
+                              <% end %>
+                          </dd>
+                      </dl>
+                  </div>
+
+                  <div class="col-lg-4">
+                      <dl class="dl-horizontal">
+                          <dd>
+                              <% if @status_uraian.kind_of?(Array) %>
+                                <% @status_uraian.each_with_index do |etc, index| %>
+                                  <dt>Status Uraian <%= index+1 %> :</dt>
+                                  <dd>
+                                    <span><%= etc %></span>
+                                  </dd>
+                                  <br>
+                                <% end %>
+                              <% end %>
+                          </dd>
+                      </dl>
+                  </div>
+
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+          <div class="wrapper wrapper-content animated fadeInUp">
+              <div class="ibox-title">
+                  <h5 style="color: green;">Penyelesaian</h5>
+              </div>
+              <div class="ibox-content">
+
+                  <table class="table">
+                      <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>Kode Penyelesaian</th>
+                          <th>Tanggal Selesai</th>
+                          <th>Durasi</th>
+                          <th>PIC</th>
+                          <th></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <% @penyelesaians.each_with_index do |penyelesaian, index| %>
+                        <tr>
+                          <td><%= index+1 %></td>
+                          <td><%= penyelesaian.kode_penyelesaian %></td>
+                          <td><%= penyelesaian.tgl_selesai.strftime("%d %B %Y") %></td>
+                          <td><%= penyelesaian.durasi %></td>
+                          <td><%= penyelesaian.pic %></td>
+                          <td><%= link_to '', edit_penyelesaian_path(penyelesaian), class: " fa fa-pencil btn btn-xs btn-warning", title: "Edit" %></td>
+                        </tr>
+                      <% end %>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6">
+          <div class="wrapper wrapper-content animated fadeInUp">
+              <div class="ibox-title">
+                  <h5 style="color: orange;">Internal Quality Check</h5>
+                  <div class="ibox-tools">
+                      <a class="collapse-link">
+                          <i class="fa fa-chevron-up"></i>
+                      </a>
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                          <i class="fa fa-wrench"></i>
+                      </a>
+                      <ul class="dropdown-menu dropdown-user">
+                          <li>
+                              <a href="#">Config option 1</a>
+                          </li>
+                          <li>
+                              <a href="#">Config option 2</a>
+                          </li>
+                      </ul>
+                      <a class="close-link">
+                          <i class="fa fa-times"></i>
+                      </a>
+                  </div>
+              </div>
+              <div class="ibox-content">
+
+                  <table class="table">
+                      <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>Tanggal Testing</th>
+                          <th>Penguji</th>
+                          <th></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <% @internal_quality_checks.each_with_index do |internal_quality_check, index| %>
+                        <tr>
+                          <td><%= index+1 %></td>
+                          <td><%= internal_quality_check.tgl_testing.strftime("%d %B %Y") %></td>
+                          <td><%= internal_quality_check.penguji %></td>
+                          <td><%= link_to '', edit_internal_path(internal_quality_check), class: " fa fa-pencil btn btn-xs btn-warning", title: "Edit" %></td>
+                        </tr>
+                      <% end %>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+          <div class="wrapper wrapper-content animated fadeInUp">
+              <div class="ibox-title">
+                  <h5 style="color: blue;">Application Release</h5>
+                  <div class="ibox-tools">
+                      <a class="collapse-link">
+                          <i class="fa fa-chevron-up"></i>
+                      </a>
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                          <i class="fa fa-wrench"></i>
+                      </a>
+                      <ul class="dropdown-menu dropdown-user">
+                          <li>
+                              <a href="#">Config option 1</a>
+                          </li>
+                          <li>
+                              <a href="#">Config option 2</a>
+                          </li>
+                      </ul>
+                      <a class="close-link">
+                          <i class="fa fa-times"></i>
+                      </a>
+                  </div>
+              </div>
+              <div class="ibox-content">
+
+                  <table class="table">
+                      <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>Tanggal Release</th>
+                          <th>Pemilik Proses</th>
+                          <th>Versi SourceCode</th>
+                          <th></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <% @changes.each_with_index do |release, index| %>
+                        <tr>
+                          <td><%= index+1 %></td>
+                          <td><%= release.tgl_release.strftime("%d %B %Y") %></td>
+                          <td><%= release.pemilik_proses %></td>
+                          <td><%= release.versi_sourcecode %></td>
+                          <td><%= link_to '', edit_change_path(release), class: " fa fa-pencil btn btn-xs btn-warning", title: "Edit" %></td>
+                        </tr>
+                      <% end %>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-md-6">
+          <div class="wrapper wrapper-content animated fadeInUp">
+              <div class="ibox-title">
+                  <h5 style="color: orange;">User Acceptance Test (UAT)</h5>
+                  <div class="ibox-tools">
+                      <a class="collapse-link">
+                          <i class="fa fa-chevron-up"></i>
+                      </a>
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                          <i class="fa fa-wrench"></i>
+                      </a>
+                      <ul class="dropdown-menu dropdown-user">
+                          <li>
+                              <a href="#">Config option 1</a>
+                          </li>
+                          <li>
+                              <a href="#">Config option 2</a>
+                          </li>
+                      </ul>
+                      <a class="close-link">
+                          <i class="fa fa-times"></i>
+                      </a>
+                  </div>
+              </div>
+              <div class="ibox-content">
+
+                  <table class="table">
+                      <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>No Testing</th>
+                          <th>Tanggal Testing</th>
+                          <th>Penguji</th>
+                          <th></th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <% @uats.each_with_index do |uat, index| %>
+                        <tr>
+                          <td><%= index+1 %></td>
+                          <td><%= uat.no_testing %></td>
+                          <td><%= uat.tgl_testing.try(:strftime, "%d %B %Y") %></td>
+                          <td><%= uat.penguji %></td>
+                          <td><%= link_to '', edit_uat_path(uat), class: " fa fa-pencil btn btn-xs btn-warning", title: "Edit" %></td>
+                        </tr>
+                      <% end %>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+        </div>
+
+    </div>
+
+  </div>
+</div>
+

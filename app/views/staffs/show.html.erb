@@ -1,0 +1,45 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form staff</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= staffs_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to staffs_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+    <% end %>
+    <%= link_to edit_staff_path(@staff), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+    <% end %>
+<!--    <h1>Show </h1>-->
+  </div>
+
+  <dl class="dl-horizontal">
+      <dt>Nama:</dt>
+      <dd><%= @staff.nama %></dd>
+
+      <dt>Jabatan:</dt>
+      <dd><%= @staff.jabatan %></dd>
+
+      <dt>Satuan kerja:</dt>
+      <dd><%= @staff.satuan_kerja %></dd>
+
+      <dt>Status kepegawaian:</dt>
+      <dd><%= @staff.status_kepegawaian %></dd>
+
+  </dl>
+</div>

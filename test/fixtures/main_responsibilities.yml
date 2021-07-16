@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  staff: one
+  tanggung_jawab_utama: MyString
+  aktivitas: MyString
+  output: MyString
+  periode: MyString
+  frekuensi: 1
+  menit: 1
+
+two:
+  staff: two
+  tanggung_jawab_utama: MyString
+  aktivitas: MyString
+  output: MyString
+  periode: MyString
+  frekuensi: 1
+  menit: 1

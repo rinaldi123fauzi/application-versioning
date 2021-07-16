@@ -1,0 +1,80 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <span style="margin-left: 20px;">
+                    <% if current_user.photo.attached? %>
+                        <%= image_tag current_user.photo, class: "img-circle", style:"width: 120px;" %>
+                    <% else %>
+                        <img alt="image" class="img-circle" src="<%= image_url 'profile_small.jpg' %>"/>
+                    <% end %>
+                    </span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="clear" style="padding-top: 20px; padding-left: 20px;" >
+                            <span class="block m-t-xs">
+                                <strong class="font-bold"><%= current_user.name %></strong>
+                        </span>
+                    </a>
+                    
+                </div>
+                <div class="logo-element">
+                 RFC
+                </div>
+            </li>
+
+            <li class="<%= is_active_controller('dashboards') %>">
+                <%= link_to root_path do %>
+                <i class="fa fa-tachometer"></i> <span class="nav-label">Dashboard</span>
+                <% end %>
+            </li>
+
+            <% if current_user.can? { |permissions| permissions.user.manage? || permissions.role.manage?} %>
+                <li class="<%= "active" if is_active_controller('users') or is_active_controller('roles') %>">
+                    <a href=""><i class="fa fa-users fa-th-large"></i> <span class="nav-label">User Management</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level <%= "active" if is_active_controller('users') or is_active_controller('roles') %>">
+                        <li class="<%= is_active_controller('users') %>"><%= link_to "Users", users_path %></li>
+                        <li class="<%= is_active_controller('roles') %>"><%= link_to "Roles", roles_path %></li>
+                    </ul>
+                </li>
+
+                <li class="<%= "active" if is_active_controller('priorities') or is_active_controller('risikos') or is_active_controller('categories') or is_active_controller('aplikasis')%>">
+                    <a href=""><i class="fa fa-database fa-th-large"></i> <span class="nav-label">Data Collection</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level <%= "active" if is_active_controller('priorities') or is_active_controller('risikos') or is_active_controller('categories') or is_active_controller('aplikasis') %>">
+                        <li class="<%= is_active_controller('priorities') %>"><%= link_to "Prioritas", priorities_path %></li>
+                        <li class="<%= is_active_controller('risikos') %>"><%= link_to "Risiko", risikos_path %></li>
+                        <li class="<%= is_active_controller('categories') %>"><%= link_to "Kategori", categories_path %></li>
+                        <li class="<%= is_active_controller('aplikasis') %>"><%= link_to "Aplikasi", aplikasis_path %></li>
+
+                        <!--
+                        <li class="<%= "active" if is_active_controller('penyelesaians') or is_active_controller('internals') or is_active_controller('uats') or is_active_controller('changes') %>">
+                            <a href=""><i class="fa fa-th-large"></i> <span class="nav-label">Modules</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level <%= "active" if is_active_controller('penyelesaians') or is_active_controller('internals') or is_active_controller('uats') or is_active_controller('changes') %>">
+                                <li class="<%= is_active_controller('penyelesaians') %>"><%= link_to "Penyelesaian", penyelesaians_path %></li>
+                                <li class="<%= is_active_controller('internals') %>"><%= link_to "Internal Quality Check", internals_path %></li>
+                                <li class="<%= is_active_controller('uats') %>"><%= link_to "UAT", uats_path %></li>
+                                <li class="<%= is_active_controller('changes') %>"><%= link_to "Release", changes_path %></li>
+                            </ul>
+                        </li>-->
+
+                    </ul>
+                </li>
+            <% end %>
+
+            <li class="<%= is_active_controller('rfcs') %>">
+                <%= link_to rfcs_path do %>
+                <i class="fa fa-magic"></i> <span class="nav-label">RFC</span>
+                <% end %>
+            </li>
+
+            <li class="<%= "active" if is_active_controller('staffs') or is_active_controller('main_responsibilities') or is_active_controller('work_activities') %>">
+                <a href=""><i class="fa fa-bar-chart fa-th-large"></i> <span class="nav-label">Analisa Beban Kerja</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level <%= "active" if is_active_controller('users') or is_active_controller('roles') %>">
+                    <li class="<%= is_active_controller('staffs') %>"><%= link_to "Data Pegawai", staffs_path %></li>
+                    <li class="<%= is_active_controller('main_responsibilities') %>"><%= link_to "Form Tanggung Jawab Utama", main_responsibilities_path %></li>
+                    <li class="<%= is_active_controller('work_activities') %>"><%= link_to "Form Aktivitas", work_activities_path %></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,118 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Form Tanggung Jawab Utama</div>
+  <div class="panel-body">
+<%= form_for(@main_responsibility, html: { class: "form-horizontal", role: "form" }) do |f| %>
+  <% if @main_responsibility.errors.any? %>
+    <div class="alert alert-danger alert-dismissable" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <h4><%= pluralize(@main_responsibility.errors.count, "error") %> prohibited this main_responsibility from being saved:</h4>
+
+      <ul>
+      <% @main_responsibility.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= f.hidden_field :nama_pembuat, value: current_user.name %>
+
+  <div class="form-group">
+    <%= f.label :staff, class: "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+      <%= f.collection_select :staff_id, Staff.all, :id, :nama, {prompt: "-- Pilih Personil --"}, class: 'form-control', id: 'staff', required: true %>
+    </div>
+
+    <%= f.label :tanggung_jawab_utama, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= f.text_field :tanggung_jawab_utama, class: "form-control", required: true %>
+    </div>
+  </div>
+
+  <div id="uraian-perubahan-entry">
+    <% if @main_responsibility.new_record? %>
+      <div class="form-group uraian-perubahan-group">
+        <label class="col-sm-2 control-label" for="project-name">Aktivitas</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="aktivitas[]" required/>
+        </div>
+        <a href="#" class="btn btn-sm btn-success btn-add-uraian-perubahan"><span class="glyphicon glyphicon-plus"></span></a>
+      </div>
+    <% else %>
+    <% if @aktivitas.kind_of?(Array) %>
+          <% @aktivitas.each_with_index do |etc, index| %>
+            <div class="form-group uraian-perubahan-group">
+              <label class="col-sm-2 control-label" for="project-name">Aktivitas <%= index+1 %></label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="aktivitas[]" value="<%= etc %>"/>
+              </div>
+              <a href="#" class="btn btn-sm btn-danger btn-remove-uraian-perubahan"><span class="glyphicon glyphicon-minus"></span></a>
+            </div>
+          <% end %>
+      <% else %>
+        <div class="form-group uraian-perubahan-group">
+          <label class="col-sm-2 control-label" for="project-name">Aktivitas</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="aktivitas[]" required/>
+          </div>
+          <a href="#" class="btn btn-sm btn-success btn-add-uraian-perubahan"><span class="glyphicon glyphicon-plus"></span></a>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="form-group">
+    <%= f.label :output, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_area :output, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :periode, class: "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+      <%= f.select :periode, ['Hari','Minggu', 'Bulan', 'Tahun'], {prompt: "Pilih Periode"}, {:class => 'form-control', required: "true"} %>
+    </div>
+
+    <%= f.label :frekuensi, class: "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+      <%= f.number_field :frekuensi, class: "form-control", required: "true" %>
+    </div>
+
+    <%= f.label :menit, class: "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+      <%= f.number_field :menit, class: "form-control", required: "true" %>
+    </div>
+
+  </div>
+  <div class="form-group float-right">
+    <div class="col-sm-offset-5 col-sm-7">
+      <%= f.submit "Submit", class: "btn btn-info" %>
+      <input type="submit" value="> Next" class="btn btn-primary" name="next_line">
+    </div>
+  </div>
+<% end %>
+  </div>
+</div>
+
+<script>
+  $('#staff').select2();
+  $(document).ready(function(){
+
+        $(document).on('click', '.btn-add-uraian-perubahan', function (e) {
+            var controlForm = $('#uraian-perubahan-entry'),
+                currentEntry = $('.uraian-perubahan-group:first'),
+                newEntry = $(currentEntry.clone()).appendTo(controlForm);
+            $('.btn-add-uraian-perubahan').removeClass("btn-success").removeClass("btn-add-uraian-perubahan").addClass("btn-danger").addClass("btn-remove-uraian-perubahan").html("<span class=\"glyphicon glyphicon-minus\"></span>");
+            $('.btn-remove-uraian-perubahan:last').removeClass("btn-remove-uraian-perubahan").addClass("btn-success").addClass("btn-add-uraian-perubahan").html("<span class=\"glyphicon glyphicon-plus\"></span>");
+            newEntry.find('input').val('');
+            e.preventDefault();
+            return false;
+        }).on('click', '.btn-remove-uraian-perubahan', function (e) {
+            $('.uraian-perubahan-group:last').remove();
+            $('.btn-remove-uraian-perubahan:last').removeClass("btn-remove-uraian-perubahan").addClass("btn-success").addClass("btn-add-uraian-perubahan").html("<span class=\"glyphicon glyphicon-plus\"></span>");
+            e.preventDefault();
+            return false;
+
+        });
+
+        $('.btn-remove-uraian-perubahan:last').removeClass("btn-remove-uraian-perubahan").addClass("btn-add-uraian-perubahan").html("<span class=\"glyphicon glyphicon-plus\"></span>");
+  });
+</script>

@@ -1,0 +1,63 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form work_activity</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= work_activities_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to work_activities_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+    <% end %>
+    <%= link_to edit_work_activity_path(@work_activity), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+    <% end %>
+<!--    <h1>Show </h1>-->
+  </div>
+
+  <dl class="dl-horizontal">
+      <dt>Staff:</dt>
+      <dd><%= @work_activity.staff.try(:nama) %></dd>
+
+      <dt>Periode waktu:</dt>
+      <dd><%= @work_activity.periode_waktu.try(:strftime, "%d %B %Y") %></dd>
+
+      <dt>Aktivitas:</dt>
+      <dd>
+        <% if @aktivitas.kind_of?(Array) %>
+          <% @aktivitas.each_with_index do |etc, index| %>
+            <%= index+1 %>. <%= etc %> <br>
+          <% end %>
+        <% end %>
+      </dd>
+
+      <dt>Waktu per aktivitas:</dt>
+      <dd><%= @work_activity.waktu_per_aktivitas %></dd>
+
+      <dt>File :</dt>
+      <dd>
+          <% @work_activity.lampiran.each_with_index do |lampiran, index| %>
+              
+              <%= index+1 %>. 
+              <%= link_to "#{[ "#{lampiran.filename}" ]}", rails_blob_path(lampiran, disposition: 'preview'), :target => "_blank" %>
+              <%= link_to '', url_for(controller: :work_activities, action: :delete_file, attachment_id: lampiran.id, work_activity_id: @work_activity.id), class: 'fa fa-close', method: "DELETE", data: { confirm: 'Are you sure?' } %>
+              <br>
+            
+          <% end %>
+      </dd>
+
+  </dl>
+</div>

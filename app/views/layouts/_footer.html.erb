@@ -1,0 +1,13 @@
+<div class="footer">
+    <div class="text-center">
+    <%
+      if Time.now.year >= 2022
+        date = "2021 - " + "#{Time.now.year}"
+      else
+        date = Time.now.year
+        # Time.now.year
+      end
+    %>
+        <strong>Copyright | </strong> PGN Solution &copy; <%= date %>
+    </div>
+</div>

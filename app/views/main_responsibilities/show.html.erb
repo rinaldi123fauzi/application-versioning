@@ -1,0 +1,116 @@
+<div class="wrapper wrapper-content">
+  <div id="content">
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-sm-4">
+          <h2>Analisis Beban Kerja</h2>
+        <ol class="breadcrumb">
+          <li>
+              <a href="<%= url_for :controller => 'dashboards', :action => 'home' %>">Home</a>
+          </li>
+          <li>
+              <a href="<%= url_for :controller => 'main_responsibilities', :action => 'index' %>">List</a>
+          </li>
+          <li class="active">
+              <strong>Tanggung Jawab</strong>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <style>
+    dt{
+      font-size: 15px;
+    }
+
+    dd{
+      font-size: 15px;
+    }
+    </style>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+          <div class="ibox">
+            <div class="ibox-content">
+              <div class="row">
+                <div class="col-lg-12">
+                    <div class="m-b-md">
+                        <a href="<%= edit_main_responsibility_path(params[:id])%>" class="btn btn-white btn-xs pull-right">Edit</a>
+                    </div>
+                    
+                    <div class="col-lg-6 col-md-6">
+                      <dl class="dl-horizontal">
+                          <dt>Created by:</dt>
+                          <dd><%= @main_responsibility.issued_by %></dd>
+                      </dl>
+                    </div>
+
+                      <div class="col-lg-6 col-md-6">
+                      <dl class="dl-horizontal">
+                          <dt>Tanggal Input:</dt>
+                          <dd><%= @main_responsibility.created_at.try(:strftime, "%d %B %Y") %></dd>
+                      </dl>
+                    </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-lg-6">
+                    <dl class="dl-horizontal">
+
+                        <dt>Nama:</dt>
+                        <dd><%= @main_responsibility.staff.try(:nama)%></dd>
+                        <dt>Jabatan:</dt>
+                        <dd><%= @main_responsibility.staff.try(:jabatan)%></dd>
+                        <dt>Satuan Kerja:</dt>
+                        <dd><%= @main_responsibility.staff.try(:satuan_kerja)%></dd>
+                        <dt>Status Kepegawaian:</dt>
+                        <dd><%= @main_responsibility.staff.try(:status_kepegawaian)%></dd>
+                        <%# <dd><a href="#" class="text-navy"> Zender Company</a> </dd> %>
+                    </dl>
+                </div>
+                <div class="col-lg-6">
+                      <dl class="dl-horizontal">
+
+                          <dt>Tanggung Jawab:</dt>
+                          <dd><%= @main_responsibility.try(:tanggung_jawab_utama)%></dd>
+                          <dt>Periode:</dt>
+                          <dd><%= @main_responsibility.try(:periode)%></dd>
+                          <dt>Frekuensi:</dt>
+                          <dd><%= @main_responsibility.try(:frekuensi)%></dd>
+                          <dt>Menit (per 1 frek):</dt>
+                          <dd><%= @main_responsibility.try(:menit)%> Menit</dd>
+                          <%# <dd><a href="#" class="text-navy"> Zender Company</a> </dd> %>
+                      </dl>
+                  </div>
+                </div>
+                <hr style="border: 1px dotted black;">
+                <div class="row">
+                  <div class="col-lg-4">
+                      <dl class="dl-horizontal">
+                        <% if @aktivitas.kind_of?(Array) %>
+                          <% @aktivitas.each_with_index do |etc, index| %>
+                            <dt>Aktivitas <%= index+1 %> :</dt>
+                            <dd>
+                              <span><%= etc %></span>
+                            </dd>
+                            <br>
+                          <% end %>
+                        <% end %>
+                      </dl>
+                  </div>
+
+                  <div class="col-lg-4">
+                      <dl class="dl-horizontal">
+                          <dt>Output :</dt>
+                          <dd><span><%= @main_responsibility.try(:output) %></span></dd>
+                      </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

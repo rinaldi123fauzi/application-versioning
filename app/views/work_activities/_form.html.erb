@@ -1,0 +1,117 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Form work_activity</div>
+  <div class="panel-body">
+<%= form_for(@work_activity, html: { class: "form-horizontal", role: "form" }) do |f| %>
+  <% if @work_activity.errors.any? %>
+    <div class="alert alert-danger alert-dismissable" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <h4><%= pluralize(@work_activity.errors.count, "error") %> prohibited this work_activity from being saved:</h4>
+
+      <ul>
+      <% @work_activity.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <%= f.hidden_field :nama_pembuat, value: current_user.name %>
+
+  <div class="form-group">
+    <%= f.label :staff, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.collection_select :staff_id, Staff.all, :id, :nama, {prompt: "-- Pilih Personil --"}, class: 'form-control', id: 'staff', required: true %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :periode_waktu, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.date_field :periode_waktu, class: "form-control", required: "true" %>
+    </div>
+  </div>
+  <div id="uraian-perubahan-entry">
+    <% if @work_activity.new_record? %>
+      <div class="form-group uraian-perubahan-group">
+        <label class="col-sm-2 control-label" for="project-name">Aktivitas</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="aktivitas[]" required/>
+        </div>
+        <a href="#" class="btn btn-sm btn-success btn-add-uraian-perubahan"><span class="glyphicon glyphicon-plus"></span></a>
+      </div>
+    <% else %>
+    <% if @aktivitas.kind_of?(Array) %>
+          <% @aktivitas.each_with_index do |etc, index| %>
+            <div class="form-group uraian-perubahan-group">
+              <label class="col-sm-2 control-label" for="project-name">Aktivitas <%= index+1 %></label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="aktivitas[]" value="<%= etc %>"/>
+              </div>
+              <a href="#" class="btn btn-sm btn-danger btn-remove-uraian-perubahan"><span class="glyphicon glyphicon-minus"></span></a>
+            </div>
+          <% end %>
+      <% else %>
+        <div class="form-group uraian-perubahan-group">
+          <label class="col-sm-2 control-label" for="project-name">Aktivitas</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="aktivitas[]" required/>
+          </div>
+          <a href="#" class="btn btn-sm btn-success btn-add-uraian-perubahan"><span class="glyphicon glyphicon-plus"></span></a>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="form-group">
+    <%= f.label :waktu_per_aktivitas, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :waktu_per_aktivitas, class: "form-control", required: true %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label "Lampiran (optional)", class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+       <%= f.file_field :lampiran, class: "form-control", direct_upload: true, accept: 'image/jpeg, image/jpg, image/png, application/pdf', multiple: true %>
+        <div style="margin-top: 10px;">
+          <% @work_activity.lampiran.each do |lampiran| %>
+            <span style="margin-right: 10px">
+              <%= link_to "#{[ "#{lampiran.filename}" ]}", rails_blob_path(lampiran, disposition: 'preview'), :target => "_blank" %>
+              <%= link_to '', url_for(controller: :work_activities, action: :delete_file, attachment_id: lampiran.id, work_activity_id: @work_activity.id), class: 'fa fa-close', method: "DELETE", data: { confirm: 'Are you sure?' } %>
+              <br>
+            </span>
+          <% end %>
+        </div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit "Submit", class: "btn btn-info" %>
+      <input type="submit" value="> Next" class="btn btn-primary" name="next_line">
+    </div>
+  </div>
+<% end %>
+  </div>
+</div>
+
+<script>
+$('#staff').select2();
+  $(document).ready(function(){
+
+        $(document).on('click', '.btn-add-uraian-perubahan', function (e) {
+            var controlForm = $('#uraian-perubahan-entry'),
+                currentEntry = $('.uraian-perubahan-group:first'),
+                newEntry = $(currentEntry.clone()).appendTo(controlForm);
+            $('.btn-add-uraian-perubahan').removeClass("btn-success").removeClass("btn-add-uraian-perubahan").addClass("btn-danger").addClass("btn-remove-uraian-perubahan").html("<span class=\"glyphicon glyphicon-minus\"></span>");
+            $('.btn-remove-uraian-perubahan:last').removeClass("btn-remove-uraian-perubahan").addClass("btn-success").addClass("btn-add-uraian-perubahan").html("<span class=\"glyphicon glyphicon-plus\"></span>");
+            newEntry.find('input').val('');
+            e.preventDefault();
+            return false;
+        }).on('click', '.btn-remove-uraian-perubahan', function (e) {
+            $('.uraian-perubahan-group:last').remove();
+            $('.btn-remove-uraian-perubahan:last').removeClass("btn-remove-uraian-perubahan").addClass("btn-success").addClass("btn-add-uraian-perubahan").html("<span class=\"glyphicon glyphicon-plus\"></span>");
+            e.preventDefault();
+            return false;
+
+        });
+
+        $('.btn-remove-uraian-perubahan:last').removeClass("btn-remove-uraian-perubahan").addClass("btn-add-uraian-perubahan").html("<span class=\"glyphicon glyphicon-plus\"></span>");
+  });
+</script>

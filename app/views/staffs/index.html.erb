@@ -1,0 +1,53 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="page-header">
+    <%= link_to new_staff_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Tambah
+    <% end %>
+    <!--    <h1>Listing </h1>-->
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+      <thead>
+      <tr>
+        <th>No</th>
+                  <th>Nama</th>
+                  <th>Jabatan</th>
+                  <th>Satuan kerja</th>
+                  <th>Status kepegawaian</th>
+                <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @staffs.each_with_index do |staff, index| %>
+      <tr>
+        <td><%= index+1 %></td>
+                  <td><%= staff.nama %></td>
+                  <td><%= staff.jabatan %></td>
+                  <td><%= staff.satuan_kerja %></td>
+                  <td><%= staff.status_kepegawaian %></td>
+                <td><%= link_to 'Show', staff %></td>
+        <td><%= link_to 'Edit', edit_staff_path(staff) %></td>
+        <td><%= link_to 'Destroy', staff, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+$(function() {
+    $('.dataTables-example').dataTable({
+        "dom": 'T<"clear">lfrtip',
+        "bInfo" : false,
+        "tableTools": {
+            "sSwfPath": "../assets/dataTables/swf/copy_csv_xls_pdf.swf"
+        }
+    });
+});
+</script>

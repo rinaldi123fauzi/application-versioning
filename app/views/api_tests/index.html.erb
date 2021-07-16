@@ -1,0 +1,54 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form api_test</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= api_tests_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Form</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to new_api_test_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Api test
+    <% end %>
+    <!--    <h1>Listing </h1>-->
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+      <thead>
+      <tr>
+        <th>No</th>
+                  <th>Nama</th>
+                  <th>Alamat</th>
+                <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% @api_tests.each_with_index do |api_test, index| %>
+      <tr>
+        <td><%= index+1 %></td>
+                  <td><%= api_test.nama %></td>
+                  <td><%= api_test.alamat %></td>
+                <td><%= link_to 'Show', api_test %></td>
+        <td><%= link_to 'Edit', edit_api_test_path(api_test) %></td>
+        <td><%= link_to 'Destroy', api_test, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

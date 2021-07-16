@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_aplikasi: MyString
+  kode: MyString
+  nama_aplikasi: MyString
+  deskripsi: MyString
+  pemilik_proses: MyString
+
+two:
+  id_aplikasi: MyString
+  kode: MyString
+  nama_aplikasi: MyString
+  deskripsi: MyString
+  pemilik_proses: MyString

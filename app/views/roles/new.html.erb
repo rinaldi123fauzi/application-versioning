@@ -1,0 +1,20 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form Role</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="<%= root_path %>">Home</a>
+      </li>
+      <li>
+        <a href="<%= roles_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Form</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+    <%= render 'form', role: @role %>
+</div>

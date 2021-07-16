@@ -1,0 +1,220 @@
+<div class="panel panel-default">
+  <div class="panel-heading">FORM RFC</div>
+  <div class="panel-body">
+  <%= form_for(@rfc, html: { class: "form-horizontal", role: "form" }) do |f| %>
+  <% if @rfc.errors.any? %>
+    <div class="alert alert-danger alert-dismissable" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <h4><%= pluralize(@rfc.errors.count, "error") %> prohibited this rfc from being saved:</h4>
+
+      <ul>
+      <% @rfc.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+    <%= f.hidden_field :nama_user, value: current_user.name %>
+  <div class="form-group">
+    <label class=" col-sm-2 control-label"> 
+        No RFC
+    </label>
+    <div class="col-sm-10">
+    <% if @rfc.new_record? %>
+      <%= f.text_field :no_registrasi_perubahan, value: @no_perubahan, class: "form-control", readonly: true %>
+    <% else %>
+      <%= f.text_field :no_registrasi_perubahan, value: @rfc.no_registrasi_perubahan, class: "form-control", readonly: true %>
+    <% end %>
+    </div>
+  </div>
+  <div class="form-group">
+
+   <%= f.label :tanggal, class: "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+    <% if @rfc.new_record?%>
+      <%= f.date_field :tanggal, class: "form-control", required: true %>
+    <% else %>
+      <%= f.date_field :tanggal, value: @rfc.tanggal, class: "form-control" %>
+    <% end %>
+    </div>
+
+    <label class="col-sm-2 control-label">
+       Nama Aplikasi
+    </label>
+    <div class="col-sm-2">
+      <%= f.collection_select :aplikasi_id, Aplikasi.where.not('status = ?', "Tidak Aktif"), :id, :aplikasi, {prompt: "-- Pilih Aplikasi --"}, class: 'form-control', onchange: "setVersionApp()", id: 'aplikasi', required: true %>
+    </div>
+
+    <label class="col-sm-2 control-label">
+       Versi Aplikasi
+    </label>
+    <div class="col-sm-2">
+      <%= f.text_field :versi_aplikasi, class: "form-control", required: true, readonly: true %>
+    </div>
+
+  </div>
+  
+  <hr style="border: 1px dotted black;">
+  <div id="uraian-perubahan-entry">
+    <% if @rfc.new_record? %>
+      <div class="form-group uraian-perubahan-group">
+
+        <label class="col-sm-2 control-label" for="project-name">Uraian Perubahan</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="uraian_perubahan[]" required/>
+        </div>
+        <a href="#" class="btn btn-sm btn-success btn-add-uraian-perubahan"><span class="glyphicon glyphicon-plus"></span></a>
+      </div>
+
+      <div class="form-group status-uraian-group">
+        <label class="col-sm-2 control-label" for="project-name">Status Uraian</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" name="status_uraian[]" required/>
+        </div>
+      </div>
+
+      <div class="form-group link-group">
+        <label class="col-sm-2 control-label" for="project-name">Link</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" name="link[]" required/>
+        </div>
+      </div>
+      <hr style="border: 1px dotted black;" class="hr-group">
+
+    <% else %>
+      <% if @uraian_perubahan.kind_of?(Array) %>
+        <% @uraian_perubahan.each_with_index do |etc, index| %>
+          
+          <div class="form-group uraian-perubahan-group">
+            <label class="col-sm-2 control-label" for="project-name">Uraian Perubahan <%= index+1 %></label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="uraian_perubahan[]" value="<%= etc %>"/>
+            </div>
+            <a href="#" class="btn btn-sm btn-danger btn-remove-uraian-perubahan"><span class="glyphicon glyphicon-minus"></span></a>
+          </div>
+          <% if @status_uraian.kind_of?(Array) %>
+            <div class="form-group status-uraian-group">
+              <label class="col-sm-2 control-label" for="project-name">Status Uraian <%= index+1 %></label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" name="status_uraian[]" value="<%= @status_uraian[index] %>" required/>
+              </div>
+            </div>
+          <% end %>
+          <% if @link.kind_of?(Array) %>
+            <div class="form-group link-group">
+              <label class="col-sm-2 control-label" for="project-name">Link <%= index+1 %></label>
+              <div class="col-sm-3">
+                <input type="text" class="form-control" name="link[]" value="<%= @link[index] %>"/>
+              </div>
+            </div>
+          <% end %>
+          <hr style="border: 1px dotted black;" class="hr-group">
+        <% end %>
+      <% else %>
+        <div class="form-group uraian-perubahan-group">
+
+          <label class="col-sm-2 control-label" for="project-name">Uraian Perubahan</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="uraian_perubahan[]" required/>
+          </div>
+          <a href="#" class="btn btn-sm btn-success btn-add-uraian-perubahan"><span class="glyphicon glyphicon-plus"></span></a>
+        </div>
+
+        <div class="form-group status-uraian-group">
+          <label class="col-sm-2 control-label" for="project-name">Status Uraian</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" name="status_uraian[]" required/>
+          </div>
+        </div>
+
+        <div class="form-group link-group">
+          <label class="col-sm-2 control-label" for="project-name">Link</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" name="link[]" required/>
+          </div>
+        </div>
+        <hr style="border: 1px dotted black;" class="hr-group">
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="form-group">
+
+    <%= f.label "prioritas", class: "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+      <%= f.collection_select :priority_id, Priority.order(:nama), :id, :nama, {prompt: "--Pilih Prioritas--"}, {class: "form-control", required: true} %>
+    </div>
+
+    <%= f.label "kategori", class: "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+      <%= f.collection_select :category_id, Category.order(:nama), :id, :nama, {prompt: "--Pilih Kategori--"}, {class: "form-control", required: true} %>
+    </div>
+
+    <%= f.label "risiko", class: "col-sm-2 control-label" %>
+    <div class="col-sm-2">
+       <%= f.collection_select :risiko_id, Risiko.order(:nama), :id, :nama, {prompt: "--Pilih Risiko--"}, {class: "form-control", required: true} %>
+    </div>
+
+  </div>
+  
+  <br>
+  <div class="form-group float-right">
+    <div class="col-sm-offset-5 col-sm-7">
+      <%= f.submit "Submit", class: "btn btn-info" %>
+      <%# <input type="submit" value="> Next Rfc" class="btn btn-primary" name="next_line"> %>
+    </div>
+  </div>
+  <% end %>
+  </div>
+</div>
+<br>
+
+<script>
+  $('#aplikasi').select2();
+  $(document).ready(function(){
+
+        $(document).on('click', '.btn-add-uraian-perubahan', function (e) {
+            var controlForm = $('#uraian-perubahan-entry'),
+                currentEntry = $('.uraian-perubahan-group:first'),
+                second_currentEntry = $('.status-uraian-group:first'),
+                third_currentEntry = $('.link-group:first'),
+                fourth_currentEntry = $('.hr-group:first'),
+                newEntry = $(currentEntry.clone()).appendTo(controlForm);
+                newEntry1 = $(second_currentEntry.clone()).appendTo(controlForm);
+                newEntry2 = $(third_currentEntry.clone()).appendTo(controlForm);
+                newEntry3 = $(fourth_currentEntry.clone()).appendTo(controlForm);
+            $('.btn-add-uraian-perubahan').removeClass("btn-success").removeClass("btn-add-uraian-perubahan").addClass("btn-danger").addClass("btn-remove-uraian-perubahan").html("<span class=\"glyphicon glyphicon-minus\"></span>");
+            $('.btn-remove-uraian-perubahan:last').removeClass("btn-remove-uraian-perubahan").addClass("btn-success").addClass("btn-add-uraian-perubahan").html("<span class=\"glyphicon glyphicon-plus\"></span>");
+            newEntry.find('input').val('');
+            newEntry1.find('input').val('');
+            newEntry2.find('input').val('');
+            newEntry3.find('input').val('');
+            e.preventDefault();
+            return false;
+        }).on('click', '.btn-remove-uraian-perubahan', function (e) {
+            $('.uraian-perubahan-group:last').remove();
+            $('.status-uraian-group:last').remove();
+            $('.link-group:last').remove();
+            $('.hr-group:last').remove();
+            $('.btn-remove-uraian-perubahan:last').removeClass("btn-remove-uraian-perubahan").addClass("btn-success").addClass("btn-add-uraian-perubahan").html("<span class=\"glyphicon glyphicon-plus\"></span>");
+            e.preventDefault();
+            return false;
+
+        });
+
+        $('.btn-remove-uraian-perubahan:last').removeClass("btn-remove-uraian-perubahan").addClass("btn-add-uraian-perubahan").html("<span class=\"glyphicon glyphicon-plus\"></span>");
+  });
+
+  function setVersionApp(){
+    var aru_id = $("#aplikasi").val();
+    // console.log(aru_id)
+
+    $.getJSON("/aplikasis/" +aru_id+ "/setVersiAplikasi",
+      function ( callback ) {
+      if (callback != "error"){
+        console.log(callback)
+        $("[name='rfc[versi_aplikasi]']").val(callback);
+      }
+    });
+  }
+</script>

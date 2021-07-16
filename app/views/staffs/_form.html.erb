@@ -1,0 +1,49 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Form staff</div>
+  <div class="panel-body">
+<%= form_for(@staff, html: { class: "form-horizontal", role: "form" }) do |f| %>
+  <% if @staff.errors.any? %>
+    <div class="alert alert-danger alert-dismissable" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <h4><%= pluralize(@staff.errors.count, "error") %> prohibited this staff from being saved:</h4>
+
+      <ul>
+      <% @staff.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :nama, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :nama, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :jabatan, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :jabatan, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :satuan_kerja, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :satuan_kerja, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :status_kepegawaian, class: "col-sm-2 control-label" %>
+    <div class="col-sm-10">
+      <%= f.text_field :status_kepegawaian, class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
+  </div>
+</div>

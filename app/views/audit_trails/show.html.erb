@@ -1,0 +1,51 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-10">
+    <h2>Form audit_trail</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">Home</a>
+      </li>
+      <li>
+        <a href="<%= audit_trails_url %>">List</a>
+      </li>
+      <li class="active">
+        <strong>Detail</strong>
+      </li>
+    </ol>
+  </div>
+</div>
+<br>
+<div id="content">
+  <div class="page-header">
+    <%= link_to audit_trails_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+    <% end %>
+    <%= link_to edit_audit_trail_path(@audit_trail), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+    <% end %>
+<!--    <h1>Show </h1>-->
+  </div>
+
+  <dl class="dl-horizontal">
+      <dt>User:</dt>
+      <dd><%= @audit_trail.user %></dd>
+
+      <dt>Description:</dt>
+      <dd><%= @audit_trail.description %></dd>
+
+      <dt>Controller:</dt>
+      <dd><%= @audit_trail.controller %></dd>
+
+      <dt>Action:</dt>
+      <dd><%= @audit_trail.action %></dd>
+
+      <dt>Browser:</dt>
+      <dd><%= @audit_trail.browser %></dd>
+
+      <dt>Ip address:</dt>
+      <dd><%= @audit_trail.ip_address %></dd>
+
+  </dl>
+</div>

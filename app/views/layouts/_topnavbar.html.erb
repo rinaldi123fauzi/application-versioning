@@ -1,0 +1,26 @@
+<div class="row border-bottom">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-success " href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <span class="m-r-sm text-muted welcome-message">Welcome to RFC Application</span>
+            </li>
+
+            <li>
+                <span>Logged <%= time_ago_in_words(current_user.last_sign_in_at)%> ago </span>
+            </li>
+
+             <li>
+                <span> | </span>
+            </li>
+
+            <li>
+                <%= link_to(destroy_user_session_path, title: 'Sign Out', data: {action: 'userLogout', 'logout-msg' => 'You can improve your security further after logging out by closing this opened browser'}) do %>
+                    <i class="fa fa-sign-out"> logout</i>
+                <% end %>
+            </li>
+        </ul>
+    </nav>
+</div>

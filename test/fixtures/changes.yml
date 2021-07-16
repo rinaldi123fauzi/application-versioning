@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tgl_release: 2021-03-10
+  pemilik_proses: MyString
+  versi_sourcecode: MyString
+
+two:
+  tgl_release: 2021-03-10
+  pemilik_proses: MyString
+  versi_sourcecode: MyString
